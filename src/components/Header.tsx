@@ -15,8 +15,7 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
             <div className="relative">
-              <Shield className="h-8 w-8 text-accent transition-transform group-hover:scale-110" />
-              <div className="absolute inset-0 bg-accent/20 rounded-full animate-pulse-soft"></div>
+              <img src="/src/assets/yatra-logo.png" alt="Yatra Sentinal" className="h-8 w-8" />
             </div>
             <span className="text-xl font-bold bg-gradient-hero bg-clip-text text-transparent">
               Yatra Sentinal

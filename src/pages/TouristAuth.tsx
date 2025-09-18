@@ -22,13 +22,17 @@ import {
   CheckCircle,
   ArrowLeft,
   QrCode,
-  Upload
+  Upload,
+  Loader2
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
+import QRLogin from "@/components/QRLogin";
 
 const TouristAuth = () => {
   const [activeTab, setActiveTab] = useState("login");
+  const [showQRLogin, setShowQRLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     // Login fields
     email: "",
@@ -191,20 +195,58 @@ const TouristAuth = () => {
                       </Button>
                     </div>
 
-                    <Button type="submit" className="w-full bg-gradient-hero hover:shadow-glow">
-                      <Shield className="mr-2 h-4 w-4" />
-                      Login to Dashboard
+                    <Button 
+                      type="submit" 
+                      className="w-full bg-gradient-hero hover:shadow-glow"
+                      disabled={isLoading}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const email = (document.getElementById('email') as HTMLInputElement)?.value;
+                        const password = (document.getElementById('password') as HTMLInputElement)?.value;
+                        
+                        if (email === 'demo@yatra.com' && password === 'demo123') {
+                          setIsLoading(true);
+                          setTimeout(() => {
+                            window.location.href = '/dashboard';
+                          }, 2000);
+                        } else {
+                          toast({
+                            title: "Invalid Credentials",
+                            description: "Use demo credentials: demo@yatra.com / demo123",
+                            variant: "destructive",
+                          });
+                        }
+                      }}
+                    >
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Signing In...
+                        </>
+                      ) : (
+                        <>
+                          <Shield className="mr-2 h-4 w-4" />
+                          Login to Dashboard
+                        </>
+                      )}
                     </Button>
 
-                    <div className="text-center">
+                    <div className="text-center space-y-4">
                       <Button 
                         variant="outline" 
                         className="w-full border-accent text-accent hover:bg-accent/10"
                         type="button"
+                        onClick={() => setShowQRLogin(true)}
                       >
                         <QrCode className="mr-2 h-4 w-4" />
                         Scan QR Code to Login
                       </Button>
+                      
+                      <div className="p-4 bg-info/10 rounded-lg text-sm">
+                        <p className="text-info font-medium mb-2">Demo Credentials:</p>
+                        <p className="text-muted-foreground">Email: demo@yatra.com</p>
+                        <p className="text-muted-foreground">Password: demo123</p>
+                      </div>
                     </div>
                   </form>
                 </CardContent>
